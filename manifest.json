@@ -1,0 +1,17 @@
+{
+    "name": "Meeting Links",
+    "description": "Time-based meeting link button",
+    "version": "0.0.1",
+    "manifest_version": 3,
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": "icon.png"
+    },
+    
+    "web_accessible_resources": [
+        {
+            "resources": ["icon.png"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}

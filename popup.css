@@ -1,0 +1,27 @@
+*{
+    box-sizing:border-box;
+}
+
+.linkbutton{
+    background-color: rgb(138, 138, 255);
+    padding:5px 8px;
+    border-radius:10px;
+
+}
+
+.main{
+    display:inline-block;
+}
+.main p{
+    line-height:10px;
+    margin-top:5px;
+}
+
+.refresh{
+    display:inline-block;
+    vertical-align: top;
+}
+
+.refresh img{
+    height:15px;
+}
