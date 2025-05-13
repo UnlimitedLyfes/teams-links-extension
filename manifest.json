@@ -12,6 +12,10 @@
         {
             "resources": ["icon.png"],
             "matches": ["<all_urls>"]
+        },
+        {
+            "resources": ["schedule.json"],
+            "matches": ["<all_urls>"]
         }
     ]
 }
