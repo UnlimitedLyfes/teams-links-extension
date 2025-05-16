@@ -1,4 +1,15 @@
 {"links":[
-	{"name": "Technopreneurship", "days": "TF", "time": "13:00-14:50 14:00-15:50", "link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_Y2U0MDA0ZmUtOTI3ZS00OTEwLWJiZGItZTA1Mjg0MTY3ZDNi%40thread.v2/0?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%22d9be52d5-537f-4689-98b9-10292b5c5fd8%22%7d" }
+	{
+		"name": "Technopreneurship", 
+		"days": "TF", 
+		"time": "13:00-14:50 14:00-15:50", 
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_Y2U0MDA0ZmUtOTI3ZS00OTEwLWJiZGItZTA1Mjg0MTY3ZDNi%40thread.v2/0?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%22d9be52d5-537f-4689-98b9-10292b5c5fd8%22%7d" 
+	},
+	{
+		"name": "Subject_namee",
+		"days": "TF",
+		"time": "21:00-23:00 21:00-23:59",
+		"link": "https://www.google.com/"
+	}
 ]
 }

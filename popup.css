@@ -2,11 +2,15 @@
     box-sizing:border-box;
 }
 
+html, body {
+    padding:3px;
+}
+
 .linkbutton{
     background-color: rgb(138, 138, 255);
-    padding:5px 8px;
+    padding:5px 20px;
     border-radius:10px;
-
+    white-space: nowrap;
 }
 
 .main{
