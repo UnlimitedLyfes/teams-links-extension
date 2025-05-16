@@ -9,13 +9,16 @@ getScheduleJson('schedule.json').then(schedule => {
     const currentTime = new Date(`January 1, 1970 ${current.getHours()}:${current.getMinutes()}`)
 
     const currentSubject = getCurrentSubject(schedule, currentDay, currentTime)
+    
+    // Modify the frontend
     if(currentSubject){
         console.log(currentSubject)
         document.querySelector(".current").innerText = currentSubject.name;
         document.querySelector(".linkbutton").href = currentSubject.link;
     }
     else{
-        console.log("No subject")
+        document.querySelector(".current").innerText = "No Subject"
+        document.querySelector(".linkbutton").href = "";
     }
 })
 
@@ -62,7 +65,7 @@ function formatTimeToArray(schedule){
 function getCurrentSubject(schedule, targetDay, targetTime){
     let returnValue = false;
     schedule["links"].forEach((subject) => {
-        indexPossible = subject["days"].findIndex(day => day == targetDay)
+        indexPossible = subject["days"].findIndex(day => day == targetDay) // Find Index so that the day lines up with the time
         if(indexPossible != -1 
             && subject["time"][indexPossible][0].getTime() < targetTime.getTime()
             && subject["time"][indexPossible][1].getTime() > targetTime.getTime())
