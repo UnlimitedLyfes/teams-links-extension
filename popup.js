@@ -18,7 +18,7 @@ getScheduleJson('schedule.json').then(schedule => {
     }
     else{
         document.querySelector(".current").innerText = "No Subject"
-        document.querySelector(".linkbutton").href = "";
+        document.querySelector(".linkbutton").href = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGFlMHpnM2xpaHc3anZtMGszeG40Z2duZ3ljejR0amR0dTEyZjg3YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wWgv8zPKP6Cw6brKfX/giphy.gif";
     }
 })
 
@@ -42,8 +42,13 @@ function formatTime(schedule){
     formatTimeToArray(schedule);
     schedule["links"].forEach((subject) => {
         subject["time"] = subject["time"].map((timeRange) => {
-            return timeRange.map((time) => {
-                return new Date(`January 1, 1970 ${time}`)
+            return timeRange.map((time, index) => { 
+                if(index == 0){ // To have 10 minutes allowance before subjects
+                    const date = new Date(`January 1, 1970 ${time}`)
+                    return new Date(date.getTime() - 600000) // 600000 ms is 10 minutes 
+                }
+                else
+                    return new Date(`January 1, 1970 ${time}`)
             })
         })
     })
