@@ -1,0 +1,188 @@
+@font-face {
+  font-family: Lato;
+  src: url(fonts/Lato/Lato-Bold.ttf);
+  font-weight:700;
+}
+@font-face {
+  font-family: Lato;
+  src: url(fonts/Lato/Lato-Regular.ttf);
+  font-weight:400;
+}
+
+
+*{
+    box-sizing: border-box;
+    border-collapse: collapse;
+    font-family: Lato, sans-serif
+}
+div, nav{
+    border:1px solid black
+}
+
+div{
+    background-color: rgb(153, 196, 153);
+}
+
+nav{
+    background-color: rgb(30, 82, 127);
+    min-width:180px;
+    flex-grow: 1;
+}
+
+#content{
+    display:flex;
+    flex-direction: row;
+    max-width: 1500px;
+    margin:0 auto;
+    height:500px;
+}
+
+#main{
+    display:flex;
+    flex-grow:5;
+    flex-direction:column;
+}
+
+.section{
+    background-color: rgb(147, 147, 232);
+    height: max-content;
+    padding-left:5px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid black;
+}
+
+h2{
+    margin:3px;
+}
+
+h4{
+    margin:0;
+}
+
+.actual_settings{
+    display:flex;
+    padding-left:20px;
+}
+.description{
+    flex-grow: 1;
+    background-color: rgb(210, 167, 167)
+}
+.switch_input{
+    width:40px;
+    text-align:center;
+}
+
+.number_input{
+  width:50px;
+  text-align:center;
+}
+
+.number_input > input{
+  width:100%;
+}
+
+.schedule_unit{
+  display:flex;
+  line-height:25px;
+  padding:0 20px;
+}
+
+.schedule_labels{
+
+}
+
+.schedule_inputs{
+  margin-left:5px;
+  padding-left:5px;
+  border-left:1px solid black;
+  flex-grow:1;
+}
+
+.schedule_inputs > input[type="text"],
+.schedule_inputs > input[type="time"]{
+  width:100%;
+}
+
+.day{
+  width:0px;
+}
+
+.schedule_inputs label{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+.schedule_inputs label:hover{
+  cursor:pointer;
+}
+
+.day:checked + label{
+  color:red;
+}
+
+.add_schedule{
+  margin:auto;
+  width:200px;
+  height:40px;
+  border-radius:50px
+}
+
+
+
+
+
+.checkbox-wrapper-2 .ikxBAC {
+  appearance: none;
+  background-color: #dfe1e4;
+  border-radius: 72px;
+  border-style: none;
+  flex-shrink: 0;
+  height: 16px;        /* ↓ smaller height */
+  width: 24px;         /* ↓ smaller width */
+  margin: 0;
+  position: relative;
+  display: inline-block;  /* makes it respect size better */
+  vertical-align: middle; /* prevents baseline gap */
+}
+
+.checkbox-wrapper-2 .ikxBAC::before {
+  content: "";
+  position: absolute;
+  top: -4px;      /* ↓ reduced padding space */
+  bottom: -4px;
+  left: -4px;
+  right: -4px;
+}
+
+.checkbox-wrapper-2 .ikxBAC::after {
+  background-color: #fff;
+  border-radius: 50%;
+  content: "";
+  height: 10px;     /* ↓ smaller thumb */
+  width: 10px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 100ms ease-out;
+}
+
+.checkbox-wrapper-2 .ikxBAC:checked::after {
+  left: 11px;       /* adjust to match new width */
+}
+
+.checkbox-wrapper-2 .ikxBAC:hover {
+  background-color: #c9cbcd;
+  transition-duration: 0s;
+}
+
+.checkbox-wrapper-2 .ikxBAC:checked {
+  background-color: #6e79d6;
+}
+
+.checkbox-wrapper-2 .ikxBAC:checked:hover {
+  background-color: #535db3;
+}
+
+.checkbox-wrapper-2 :focus:not(.focus-visible) {
+  outline: 0;
+}
