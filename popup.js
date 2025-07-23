@@ -71,10 +71,13 @@ function getCurrentSubject(schedule, targetDay, targetTime){
     let returnValue = false;
     schedule["links"].forEach((subject) => {
         indexPossible = subject["days"].findIndex(day => day == targetDay) // Find Index so that the day lines up with the time
-        if(indexPossible != -1 
-            && subject["time"][indexPossible][0].getTime() < targetTime.getTime()
-            && subject["time"][indexPossible][1].getTime() > targetTime.getTime())
-        { returnValue = subject; }
+        if (
+          indexPossible != -1 &&
+          subject["time"][0][0].getTime() < targetTime.getTime() && //originally [indexPossible][0] and [indexPossible][1] but i got rid 
+          subject["time"][0][1].getTime() > targetTime.getTime()    //of having two times on two different days in one entry.
+        ) {
+          returnValue = subject;
+        }
     })
     return returnValue;
 }
