@@ -32,7 +32,7 @@
                 <div id = "entries_section">
                 </div>
                 <div class = "actual_settings">
-                    <button id = "add_schedule">+</button>
+                    <button type='button' id = "add_schedule">+</button> <!-- For some reason default type is submit -->
                 </div>
                 <input type="submit">
             </form>
@@ -58,13 +58,14 @@
                     <tr>
                         <th> Days</th>
                         <td>  
-                            <label>M<input type="checkbox" name="day" class="day"></label>
-                            <label>T<input type="checkbox" name="day" class="day"></label>
-                            <label>W<input type="checkbox" name="day" class="day"></label>
-                            <label>Th<input type="checkbox" name="day" class="day"></label>
-                            <label>F<input type="checkbox" name="day" class="day"></label>
-                            <label>Sa<input type="checkbox" name="day" class="day"></label>
-                            <label>Su<input type="checkbox" name="day" class="day"></label> 
+                            <label>M<input type="checkbox" name="day" class="day" value = "M"></label>
+                            <label>T<input type="checkbox" name="day" class="day" value = "T"></label>
+                            <label>W<input type="checkbox" name="day" class="day" value = "W"></label>
+                            <label>Th<input type="checkbox" name="day" class="day" value = "Th"></label>
+                            <label>F<input type="checkbox" name="day" class="day" value = "F"></label>
+                            <label>Sa<input type="checkbox" name="day" class="day" value = "Sa"></label>
+                            <label>Su<input type="checkbox" name="day" class="day" value = "Su"></label> 
+                            <input type="hidden" name = "day" class = "day" value = ","> <!--Days checked array split delimiter-->
                         </td>
                     </tr>
                 </table>

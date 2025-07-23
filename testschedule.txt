@@ -1,0 +1,39 @@
+{"links":[
+	{
+		"name": "Technopreneurship", 
+		"days": "TF", 
+		"time": "14:00-15:50", 
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_Y2U0MDA0ZmUtOTI3ZS00OTEwLWJiZGItZTA1Mjg0MTY3ZDNi%40thread.v2/0?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%22d9be52d5-537f-4689-98b9-10292b5c5fd8%22%7d" 
+	},
+	{
+		"name": "Technopreneurship", 
+		"days": "TF", 
+		"time": "14:00-15:50", 
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_Y2U0MDA0ZmUtOTI3ZS00OTEwLWJiZGItZTA1Mjg0MTY3ZDNi%40thread.v2/0?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%22d9be52d5-537f-4689-98b9-10292b5c5fd8%22%7d" 
+	},
+	{
+		"name": "Structured Programming",
+		"days": "T",
+		"time": "09:00-11:40",
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3aJyhV-L5oioOIg1zw1_POO3A2QJH2FsCHxRwe1rib1aA1%40thread.tacv2/1745235169803?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%2231241621-3439-4357-82fe-ccbfa343002f%22%7d"
+	},
+	{
+		"name": "Networking",
+		"days": "T",
+		"time": "17:00-18:50",
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_OGI3ZTc5MGEtNDcyMC00NjI2LWFlOGMtODcxNDNlMmYxMzY4%40thread.v2/0?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%22770d55c2-9ad6-4165-b446-1c5adebe3abb%22%7d"
+	},
+	{
+		"name": "P&D Computing",
+		"days": "F",
+		"time": "07:00-08:50",
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3ah8gV1w3bv9mmfF7In8dbRBIDJ3mt731Na5VyQPJUC841%40thread.tacv2/1746140272886?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%2231241621-3439-4357-82fe-ccbfa343002f%22%7d"
+	},
+	{
+		"name": "Application Development",
+		"days": "F",
+		"time": "18:00-20:40",
+		"link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZWJmYTRjOTAtOWM1Mi00ZGY4LTk1MTMtNDJkYzljOGFiMDRl%40thread.v2/0?context=%7b%22Tid%22%3a%22b0a025d9-cb88-4408-9b15-ce77d47c3810%22%2c%22Oid%22%3a%22d74fe275-14f5-4472-b7d5-814945ea4639%22%7d"
+	}
+]
+}
