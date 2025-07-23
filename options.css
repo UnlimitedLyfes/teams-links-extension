@@ -81,6 +81,17 @@ h4{
   width:100%;
 }
 
+#import_export{
+  height:20px;
+  display:flex;
+  justify-content:space-between;
+}
+
+
+#entries_section{
+  margin-top:3px;
+}
+
 .schedule_unit{
   display:flex;
   line-height:25px;

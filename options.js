@@ -5,8 +5,8 @@ console.log(schedule_form);
 let entry_id = 0;
 const entries_section = document.getElementById('entries_section');
 const schedule_template = document.getElementById('schedule_unit_template')
-getScheduleJson('schedule.json').then(schedule => {
-    schedule["links"].forEach(subject => {
+chrome.storage.sync.get(['links'], (result) => {
+    result.links.forEach(subject => {
         const clone = generateScheduleClone();
         const mainDiv = clone.querySelector('.schedule_unit');
 
@@ -40,12 +40,47 @@ addButton.addEventListener("click", () => {
 //saving autosave portion
 
 //importing json
+const importButton = document.querySelector('#import');
+importButton.addEventListener('change', ()=>{
+    const file = importButton.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const jsObject = JSON.parse(event.target.result);
+        chrome.storage.sync.set(jsObject, ()=>{
+            console.log("set");
+            location.reload();
+        })
+    };
+
+    reader.readAsText(file);
+})
 
 //exporting json
+const exportButton = document.querySelector('#export');
+exportButton.addEventListener('click', () => {
+    chrome.storage.sync.get(['links'], result => {
+        const jsonString = JSON.stringify({links : result.links}); 
+        const blob = new Blob([jsonString], { type: "application/json" });
+
+        //start download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "data.json"; // Desired filename
+        document.body.appendChild(a); // Required for Firefox
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url); // Clean up
+    })
+})
+
 
 //submitting
 schedule_form.addEventListener('submit', (event) => {
     event.preventDefault(); // Stop the default form submission
+
     const formData = new FormData(schedule_form);
     newFormData = formDataToObjectWithArrays(formData);;
     const newSched = [];
