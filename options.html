@@ -27,35 +27,53 @@
                     </div>
                 </div>
             </div>
-            <div class = "section">
+            <form id="schedule_form" class = "section">
                 <h2>Schedule</h2>
-                <div class = "schedule_unit">
-                    <div class="schedule_labels">
-                        Name<br>
-                        Link<br>
-                        Time<br>
-                        Days<br>
-                    </div>
-                    <div class="schedule_inputs">
-                        <input type="text" name="name"><br>
-                        <input type="text" name="link"><br>
-                        <input type="time" name="time"><br>
-                        <input type="checkbox" id="mon" name="mon" class="day"><label for="mon">M</label>
-                        <input type="checkbox" id="tue" name="tue" class="day"><label for="tue">T</label>
-                        <input type="checkbox" id="wed" name="wed" class="day"><label for="wed">W</label>
-                        <input type="checkbox" id="thu" name="thu" class="day"><label for="thu">Th</label>
-                        <input type="checkbox" id="fri" name="fri" class="day"><label for="fri">F</label>
-                    </div>
-                    </div>
-                    
-                    
-                    
+                <div id = "entries_section">
                 </div>
                 <div class = "actual_settings">
-                    <button class = "add_schedule">+</button>
+                    <button id = "add_schedule">+</button>
                 </div>
-            </div>
+                <input type="submit">
+            </form>
         </div>
     </div>
+
+    <template id = "schedule_unit_template">
+        <div class = "schedule_unit">
+            <div class = "schedule_unit_content">
+                <table>
+                    <tr>
+                        <th> Name</th>
+                        <td> <input type="text" name="name"> </td>
+                    </tr>
+                    <tr>
+                        <th> Link</th>
+                        <td> <input type="text" name="link"> </td>
+                    </tr>
+                    <tr>
+                        <th> Time</th>
+                        <td> <input type="time" name="timeStart"> - <input type="time" name="timeEnd"> </td>
+                    </tr>
+                    <tr>
+                        <th> Days</th>
+                        <td>  
+                            <label>M<input type="checkbox" name="day" class="day"></label>
+                            <label>T<input type="checkbox" name="day" class="day"></label>
+                            <label>W<input type="checkbox" name="day" class="day"></label>
+                            <label>Th<input type="checkbox" name="day" class="day"></label>
+                            <label>F<input type="checkbox" name="day" class="day"></label>
+                            <label>Sa<input type="checkbox" name="day" class="day"></label>
+                            <label>Su<input type="checkbox" name="day" class="day"></label> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class = "schedule_unit_x">
+                <img src="icons/remove.png">
+            </div>
+        </div>
+    </template>
+    <script src="options.js"></script>
 </body>
 </html>

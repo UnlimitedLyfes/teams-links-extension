@@ -15,11 +15,11 @@
     border-collapse: collapse;
     font-family: Lato, sans-serif
 }
-div, nav{
+div, nav, form{
     border:1px solid black
 }
 
-div{
+div, form{
     background-color: rgb(153, 196, 153);
 }
 
@@ -85,21 +85,21 @@ h4{
   display:flex;
   line-height:25px;
   padding:0 20px;
+  margin-bottom:5px;
 }
 
-.schedule_labels{
-
-}
-
-.schedule_inputs{
-  margin-left:5px;
-  padding-left:5px;
-  border-left:1px solid black;
+.schedule_unit_content{
   flex-grow:1;
 }
 
-.schedule_inputs > input[type="text"],
-.schedule_inputs > input[type="time"]{
+.schedule_unit_content table{
+  width:90%;
+}
+.schedule_unit_content th{
+  width:1%;
+}
+
+.schedule_unit_content input[type="text"]{
   width:100%;
 }
 
@@ -107,27 +107,47 @@ h4{
   width:0px;
 }
 
-.schedule_inputs label{
+.schedule_unit_content label{
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 }
-.schedule_inputs label:hover{
+.schedule_unit_content label:hover, .day:hover{
   cursor:pointer;
 }
 
-.day:checked + label{
+.schedule_unit label:has(> .day:checked){
   color:red;
 }
 
-.add_schedule{
+.schedule_unit_x{
+  display:flex;
+  margin-right:-17px;
+  align-items: center;
+  justify-content: center;
+  width:30px;
+}
+
+.schedule_unit_x > img{
+  width:20px;
+}
+
+.schedule_unit_x:hover{
+  background-color:rgb(253, 65, 57);
+  cursor:pointer;
+}
+
+#add_schedule{
   margin:auto;
   width:200px;
   height:40px;
   border-radius:50px
 }
 
-
+form input[type="submit"]{
+  margin-top:5px;
+  float:right;
+}
 
 
 
