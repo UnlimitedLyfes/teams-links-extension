@@ -29,3 +29,11 @@ html, body {
 .refresh img{
     height:15px;
 }
+.top{
+    display:flex;
+    justify-content: space-between;
+}
+
+#optionsButton:hover{
+    cursor:pointer;
+}

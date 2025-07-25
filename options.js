@@ -3,9 +3,10 @@ console.log(schedule_form);
 
 // Put current options in
 let entry_id = 0;
-const entries_section = document.getElementById('entries_section');
 const schedule_template = document.getElementById('schedule_unit_template')
-chrome.storage.sync.get(['links'], (result) => {
+chrome.storage.sync.get(['links', 'gracePeriod_m'], (result) => {
+    // for schedule
+    const entries_section = document.getElementById("entries_section");
     result.links.forEach(subject => {
         const clone = generateScheduleClone();
         const mainDiv = clone.querySelector('.schedule_unit');
@@ -27,7 +28,11 @@ chrome.storage.sync.get(['links'], (result) => {
 
         entries_section.appendChild(clone);
     });
-    entry_id;
+
+    //for General
+    const gracePeriodInput = document.querySelector('#gracePeriodInput');
+    const gracePeriod_m = result.gracePeriod_m ?? 10;
+    gracePeriodInput.value = gracePeriod_m;
 })
 
 //adding options
@@ -38,6 +43,10 @@ addButton.addEventListener("click", () => {
 })
 
 //saving autosave portion
+const gracePeriodInput = document.querySelector("#gracePeriodInput");
+gracePeriodInput.addEventListener('change', () => {
+    chrome.storage.sync.set({gracePeriod_m: gracePeriodInput.value})
+})
 
 //importing json
 const importButton = document.querySelector('#import');

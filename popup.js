@@ -1,7 +1,9 @@
-chrome.storage.sync.get(["links"], (result) => {
+chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
+  const gracePeriod_m = result.gracePeriod_m ?? 10;
+  const gracePeriod_ms = gracePeriod_m * 60000 + 60000 // idk why 1 additional minute but it works so idgaf
     schedule = {links:result.links};
   formatDaysToArray(schedule);
-  formatTime(schedule);
+  formatTime(schedule, gracePeriod_ms);
   console.log(schedule);
 
   const current = new Date();
@@ -25,6 +27,13 @@ chrome.storage.sync.get(["links"], (result) => {
   }
 });
 
+//open options page using button
+const optionsButton = document.querySelector('#optionsButton');
+optionsButton.addEventListener('click', () => {
+  chrome.runtime.openOptionsPage();
+})
+
+
 // ------------ functions
 async function getScheduleJson(file) {
   const response = await fetch(chrome.runtime.getURL(file));
@@ -40,7 +49,7 @@ function formatDaysToArray(schedule) {
 }
 
 // Format Time to [[start, end], [start, end], using formatTimeToArray and turn them into type Date
-function formatTime(schedule) {
+function formatTime(schedule, gracePeriod_ms) {
   formatTimeToArray(schedule);
   schedule["links"].forEach((subject) => {
     subject["time"] = subject["time"].map((timeRange) => {
@@ -48,7 +57,7 @@ function formatTime(schedule) {
         if (index == 0) {
           // To have 10 minutes allowance before subjects
           const date = new Date(`January 1, 1970 ${time}`);
-          return new Date(date.getTime() - 600000); // 600000 ms is 10 minutes
+          return new Date(date.getTime() - gracePeriod_ms); // 600000 ms is 10 minutes
         } else return new Date(`January 1, 1970 ${time}`);
       });
     });
