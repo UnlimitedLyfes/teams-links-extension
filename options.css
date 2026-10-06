@@ -11,18 +11,24 @@
 }
 
 :root {
-    color-scheme: light;
+    color-scheme: light dark;
     --bg: #f5f7fb;
     --surface: #ffffff;
     --surface-strong: #eef1f8;
+    --field-bg: #ffffff;
     --text: #1f2430;
     --muted: #687385;
     --border: #dce2ee;
     --accent: #6264a7;
     --accent-hover: #51538f;
+    --accent-text: #ffffff;
     --danger: #c83232;
+    --danger-border: #f0b8b8;
     --danger-soft: #fff0f0;
     --focus: rgba(98, 100, 167, .22);
+    --shadow: rgba(42, 51, 77, .07);
+    --error-surface: #fffafa;
+    --icon-filter: none;
 }
 
 * {
@@ -120,7 +126,7 @@ h3 {
 }
 
 .save-status.is-error {
-    border-color: #f0b8b8;
+    border-color: var(--danger-border);
     background: var(--danger-soft);
     color: var(--danger);
 }
@@ -132,7 +138,7 @@ h3 {
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--surface);
-    box-shadow: 0 16px 40px rgba(42, 51, 77, .07);
+    box-shadow: 0 16px 40px var(--shadow);
 }
 
 .field-row {
@@ -164,7 +170,7 @@ input[type="time"] {
     min-height: 40px;
     border: 1px solid var(--border);
     border-radius: 7px;
-    background: #ffffff;
+    background: var(--field-bg);
     color: var(--text);
     padding: 8px 10px;
 }
@@ -200,7 +206,7 @@ button:focus-visible,
 .primary-button {
     border: 1px solid var(--accent);
     background: var(--accent);
-    color: #ffffff;
+    color: var(--accent-text);
 }
 
 .primary-button:hover {
@@ -209,7 +215,7 @@ button:focus-visible,
 
 .secondary-button {
     border: 1px solid var(--border);
-    background: #ffffff;
+    background: var(--field-bg);
     color: var(--text);
 }
 
@@ -236,12 +242,12 @@ button:focus-visible,
     padding: 16px;
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--field-bg);
 }
 
 .schedule_unit.has-error {
-    border-color: #f0b8b8;
-    background: #fffafa;
+    border-color: var(--danger-border);
+    background: var(--error-surface);
 }
 
 .schedule_unit_header {
@@ -264,10 +270,11 @@ button:focus-visible,
 .schedule_unit_x img {
     width: 16px;
     height: 16px;
+    filter: var(--icon-filter);
 }
 
 .schedule_unit_x:hover {
-    border-color: #f0b8b8;
+    border-color: var(--danger-border);
     background: var(--danger-soft);
 }
 
@@ -345,11 +352,33 @@ button:focus-visible,
 .day-group input:checked + span {
     border-color: var(--accent);
     background: var(--accent);
-    color: #ffffff;
+    color: var(--accent-text);
 }
 
 .form-actions {
     padding-top: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #11131a;
+        --surface: #1b1f2a;
+        --surface-strong: #242938;
+        --field-bg: #161a23;
+        --text: #f3f5fa;
+        --muted: #aab3c5;
+        --border: #343b4e;
+        --accent: #8b8de6;
+        --accent-hover: #a3a5f4;
+        --accent-text: #11131a;
+        --danger: #ff8a8a;
+        --danger-border: #6d3339;
+        --danger-soft: #3a2024;
+        --focus: rgba(139, 141, 230, .28);
+        --shadow: rgba(0, 0, 0, .28);
+        --error-surface: #211a20;
+        --icon-filter: invert(1);
+    }
 }
 
 @media (max-width: 860px) {

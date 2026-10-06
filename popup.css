@@ -1,5 +1,5 @@
 :root {
-    color-scheme: light;
+    color-scheme: light dark;
     --bg: #f7f8fc;
     --surface: #ffffff;
     --surface-strong: #f1f3f9;
@@ -8,7 +8,9 @@
     --border: #dde2ee;
     --accent: #6264a7;
     --accent-hover: #51538f;
+    --accent-text: #ffffff;
     --disabled: #a3adbf;
+    --icon-filter: none;
 }
 
 * {
@@ -70,6 +72,7 @@ h1 {
 .icon-button img {
     width: 16px;
     height: 16px;
+    filter: var(--icon-filter);
 }
 
 .meeting-card {
@@ -108,7 +111,7 @@ h1 {
     justify-content: center;
     border-radius: 8px;
     background: var(--accent);
-    color: #ffffff;
+    color: var(--accent-text);
     font-size: 14px;
     font-weight: 700;
     text-decoration: none;
@@ -122,4 +125,20 @@ h1 {
     background: var(--surface-strong);
     color: var(--disabled);
     pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #11131a;
+        --surface: #1b1f2a;
+        --surface-strong: #242938;
+        --text: #f3f5fa;
+        --muted: #aab3c5;
+        --border: #343b4e;
+        --accent: #8b8de6;
+        --accent-hover: #a3a5f4;
+        --accent-text: #11131a;
+        --disabled: #778198;
+        --icon-filter: invert(1);
+    }
 }
