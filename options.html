@@ -3,83 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teams Links Options</title>
+    <title>Meeting Links Options</title>
     <link rel="stylesheet" href="options.css">
 </head>
 <body>
-    <div id = "content">
-        <nav>
-        </nav>
-        <div id = "main">
-            <div class = "section">
-                <h2>General</h2>
-                <div class = "actual_settings">
-                    <div class = "description">
-                        <h4>Time Frame before Meeting (m):</h4>
-                    </div>
-                    <!-- <div class="switch_input">
-                        <div class="checkbox-wrapper-2">
-                            <input type="checkbox" class="sc-gJwTLC ikxBAC">
-                        </div>
-                    </div> -->
-                    <div class="number_input">
-                        <input type="number" id="gracePeriodInput">
-                    </div>
-                </div>
+    <main id="content">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">Browser extension</p>
+                <h1>Meeting Links</h1>
             </div>
-            <form id="schedule_form" class = "section">
-                <h2>Schedule</h2>
-                <button type="button" id="export">Export</button>
-                <div id = "entries_section">
-                </div>
-                <div class = "actual_settings">
-                    <button type='button' id = "add_schedule">+</button> <!-- For some reason default type is submit -->
-                </div>
-                <input type="submit">
-            </form>
-            <div class="section">
-                Import Schedule<br>
-                <input type="file" id="import" accept="application/json">
-            </div>
-        </div>
-    </div>
+            <p id="saveStatus" class="save-status" role="status">Ready</p>
+        </header>
 
-    <template id = "schedule_unit_template">
-        <div class = "schedule_unit">
-            <div class = "schedule_unit_content">
-                <table>
-                    <tr>
-                        <th> Name</th>
-                        <td> <input type="text" name="name"> </td>
-                    </tr>
-                    <tr>
-                        <th> Link</th>
-                        <td> <input type="text" name="link"> </td>
-                    </tr>
-                    <tr>
-                        <th> Time</th>
-                        <td> <input type="time" name="timeStart"> - <input type="time" name="timeEnd"> </td>
-                    </tr>
-                    <tr>
-                        <th> Days</th>
-                        <td>  
-                            <label>M<input type="checkbox" name="day" class="day" value = "M"></label>
-                            <label>T<input type="checkbox" name="day" class="day" value = "T"></label>
-                            <label>W<input type="checkbox" name="day" class="day" value = "W"></label>
-                            <label>Th<input type="checkbox" name="day" class="day" value = "Th"></label>
-                            <label>F<input type="checkbox" name="day" class="day" value = "F"></label>
-                            <label>Sa<input type="checkbox" name="day" class="day" value = "Sa"></label>
-                            <label>Su<input type="checkbox" name="day" class="day" value = "Su"></label> 
-                            <input type="hidden" name = "day" class = "day" value = ","> <!--Days checked array split delimiter-->
-                        </td>
-                    </tr>
-                </table>
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <h2>General</h2>
+                    <p>Set how early a meeting becomes available in the popup.</p>
+                </div>
             </div>
-            <div class = "schedule_unit_x">
-                <img src="icons/remove.png">
+            <label class="field-row" for="gracePeriodInput">
+                <span>Open meetings early</span>
+                <span class="number-field">
+                    <input type="number" id="gracePeriodInput" min="0" step="1">
+                    <span>min</span>
+                </span>
+            </label>
+        </section>
+
+        <form id="schedule_form" class="section">
+            <div class="section-heading">
+                <div>
+                    <h2>Schedule</h2>
+                    <p>Add meeting links and choose the days they should appear.</p>
+                </div>
+                <div class="toolbar">
+                    <button type="button" id="export" class="secondary-button">Export</button>
+                    <label class="secondary-button file-button" for="import">Import</label>
+                    <input type="file" id="import" accept="application/json">
+                </div>
             </div>
-        </div>
+
+            <div id="entries_section" class="schedule-list"></div>
+
+            <div class="form-actions">
+                <button type="button" id="add_schedule" class="secondary-button">Add meeting</button>
+                <button type="submit" class="primary-button">Save changes</button>
+            </div>
+        </form>
+    </main>
+
+    <template id="schedule_unit_template">
+        <article class="schedule_unit">
+            <div class="schedule_unit_header">
+                <h3>Meeting</h3>
+                <button type="button" class="schedule_unit_x" aria-label="Remove meeting" title="Remove meeting">
+                    <img src="icons/remove.png" alt="">
+                </button>
+            </div>
+
+            <div class="field-grid">
+                <label>
+                    <span>Name</span>
+                    <input type="text" name="name" placeholder="Class or meeting name" required>
+                </label>
+                <label>
+                    <span>Teams link</span>
+                    <input type="url" name="link" placeholder="https://teams.microsoft.com/..." required>
+                </label>
+                <label>
+                    <span>Starts</span>
+                    <input type="time" name="timeStart" required>
+                </label>
+                <label>
+                    <span>Ends</span>
+                    <input type="time" name="timeEnd" required>
+                </label>
+            </div>
+
+            <fieldset class="days-field">
+                <legend>Days</legend>
+                <div class="day-group">
+                    <label><input type="checkbox" name="day" class="day" value="M"><span>M</span></label>
+                    <label><input type="checkbox" name="day" class="day" value="T"><span>T</span></label>
+                    <label><input type="checkbox" name="day" class="day" value="W"><span>W</span></label>
+                    <label><input type="checkbox" name="day" class="day" value="Th"><span>Th</span></label>
+                    <label><input type="checkbox" name="day" class="day" value="F"><span>F</span></label>
+                    <label><input type="checkbox" name="day" class="day" value="Sa"><span>Sa</span></label>
+                    <label><input type="checkbox" name="day" class="day" value="Su"><span>Su</span></label>
+                    <input type="hidden" name="day" class="day-delimiter" value=",">
+                </div>
+                <p class="field-error">Choose at least one day.</p>
+            </fieldset>
+        </article>
     </template>
+
     <script src="options.js"></script>
 </body>
 </html>

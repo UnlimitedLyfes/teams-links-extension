@@ -1,13 +1,12 @@
 chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
   const gracePeriod_m = result.gracePeriod_m ?? 10;
-  const gracePeriod_ms = gracePeriod_m * 60000 + 60000 // idk why 1 additional minute but it works so idgaf
-    schedule = {links:result.links};
+  const gracePeriod_ms = gracePeriod_m * 60000;
+  const schedule = { links: result.links ?? [] };
   formatDaysToArray(schedule);
   formatTime(schedule, gracePeriod_ms);
-  console.log(schedule);
 
   const current = new Date();
-  const daysOfTheWeek = ["N/A", "M", "T", "W", "Th", "F", "S"];
+  const daysOfTheWeek = ["Su", "M", "T", "W", "Th", "F", "Sa"];
   const currentDay = daysOfTheWeek[current.getDay()];
   const currentTime = new Date(
     `January 1, 1970 ${current.getHours()}:${current.getMinutes()}`
@@ -16,14 +15,22 @@ chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
   const currentSubject = getCurrentSubject(schedule, currentDay, currentTime);
 
   // Modify the frontend
+  const currentLabel = document.querySelector(".current");
+  const timeLabel = document.querySelector(".meeting-time");
+  const linkButton = document.querySelector(".linkbutton");
+
   if (currentSubject) {
-    console.log(currentSubject);
-    document.querySelector(".current").innerText = currentSubject.name;
-    document.querySelector(".linkbutton").href = currentSubject.link;
+    currentLabel.innerText = currentSubject.name;
+    timeLabel.innerText = currentSubject.timeText;
+    linkButton.href = currentSubject.link;
+    linkButton.classList.remove("is-disabled");
+    linkButton.removeAttribute("aria-disabled");
   } else {
-    document.querySelector(".current").innerText = "No Subject";
-    document.querySelector(".linkbutton").href =
-      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGFlMHpnM2xpaHc3anZtMGszeG40Z2duZ3ljejR0amR0dTEyZjg3YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wWgv8zPKP6Cw6brKfX/giphy.gif";
+    currentLabel.innerText = "No meeting now";
+    timeLabel.innerText = "Your next saved meeting will appear here.";
+    linkButton.removeAttribute("href");
+    linkButton.classList.add("is-disabled");
+    linkButton.setAttribute("aria-disabled", "true");
   }
 });
 
@@ -52,12 +59,12 @@ function formatDaysToArray(schedule) {
 function formatTime(schedule, gracePeriod_ms) {
   formatTimeToArray(schedule);
   schedule["links"].forEach((subject) => {
+    subject.timeText = subject["time"][0].join(" - ");
     subject["time"] = subject["time"].map((timeRange) => {
       return timeRange.map((time, index) => {
         if (index == 0) {
-          // To have 10 minutes allowance before subjects
           const date = new Date(`January 1, 1970 ${time}`);
-          return new Date(date.getTime() - gracePeriod_ms); // 600000 ms is 10 minutes
+          return new Date(date.getTime() - gracePeriod_ms);
         } else return new Date(`January 1, 1970 ${time}`);
       });
     });
@@ -79,11 +86,11 @@ function formatTimeToArray(schedule) {
 function getCurrentSubject(schedule, targetDay, targetTime) {
   let returnValue = false;
   schedule["links"].forEach((subject) => {
-    indexPossible = subject["days"].findIndex((day) => day == targetDay); // Find Index so that the day lines up with the time
+    const indexPossible = subject["days"].findIndex((day) => day == targetDay);
     if (
       indexPossible != -1 &&
-      subject["time"][0][0].getTime() < targetTime.getTime() && //originally [indexPossible][0] and [indexPossible][1] but i got rid
-      subject["time"][0][1].getTime() > targetTime.getTime() //of having two times on two different days in one entry.
+      subject["time"][0][0].getTime() < targetTime.getTime() &&
+      subject["time"][0][1].getTime() > targetTime.getTime()
     ) {
       returnValue = subject;
     }

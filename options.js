@@ -1,192 +1,236 @@
-const schedule_form = document.getElementById('schedule_form');
-console.log(schedule_form);
+const scheduleForm = document.getElementById("schedule_form");
+const scheduleTemplate = document.getElementById("schedule_unit_template");
+const entriesSection = document.getElementById("entries_section");
+const addButton = document.getElementById("add_schedule");
+const gracePeriodInput = document.getElementById("gracePeriodInput");
+const importButton = document.getElementById("import");
+const exportButton = document.getElementById("export");
+const saveStatus = document.getElementById("saveStatus");
 
-// Put current options in
-let entry_id = 0;
-const schedule_template = document.getElementById('schedule_unit_template')
-chrome.storage.sync.get(['links', 'gracePeriod_m'], (result) => {
-    // for schedule
-    const entries_section = document.getElementById("entries_section");
-    result.links.forEach(subject => {
-        const clone = generateScheduleClone();
-        const mainDiv = clone.querySelector('.schedule_unit');
+let entryId = 0;
+let saveTimer;
 
-        mainDiv.querySelector('[name="name"]').setAttribute('value', subject["name"]);
-        mainDiv.querySelector('[name="link"]').setAttribute('value', subject["link"]);
+chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
+    const links = result.links ?? [];
 
-        subject['time'] = subject['time'].split('-');
-        mainDiv.querySelector('[name="timeStart"]').setAttribute('value', subject["time"][0]);
-        mainDiv.querySelector('[name="timeEnd"]').setAttribute('value', subject["time"][1]);
+    if (links.length === 0) {
+        entriesSection.appendChild(generateScheduleClone());
+    } else {
+        links.forEach((subject) => {
+            entriesSection.appendChild(generateScheduleClone(subject));
+        });
+    }
 
-        const boolDays = formatDaysToBooleanArray(subject["days"]);
-        const dayInputs = mainDiv.querySelectorAll('[name^="day"]');
-        boolDays.forEach((isOn, index) => {
-            if(isOn){
-                dayInputs[index].checked = true;
-            }
-        })
+    gracePeriodInput.value = result.gracePeriod_m ?? 10;
+    setStatus("Ready");
+});
 
-        entries_section.appendChild(clone);
-    });
-
-    //for General
-    const gracePeriodInput = document.querySelector('#gracePeriodInput');
-    const gracePeriod_m = result.gracePeriod_m ?? 10;
-    gracePeriodInput.value = gracePeriod_m;
-})
-
-//adding options
-const addButton = document.querySelector('#add_schedule');
 addButton.addEventListener("click", () => {
-    const clone = generateScheduleClone();
-    entries_section.appendChild(clone);
-})
+    entriesSection.appendChild(generateScheduleClone());
+    setDirty();
+});
 
-//saving autosave portion
-const gracePeriodInput = document.querySelector("#gracePeriodInput");
-gracePeriodInput.addEventListener('change', () => {
-    chrome.storage.sync.set({gracePeriod_m: gracePeriodInput.value})
-})
+gracePeriodInput.addEventListener("change", () => {
+    const value = Number(gracePeriodInput.value);
+    if (value < 0 || Number.isNaN(value)) {
+        gracePeriodInput.value = 0;
+    }
 
-//importing json
-const importButton = document.querySelector('#import');
-importButton.addEventListener('change', ()=>{
+    chrome.storage.sync.set({ gracePeriod_m: gracePeriodInput.value }, () => {
+        setStatus("Saved");
+    });
+});
+
+importButton.addEventListener("change", () => {
     const file = importButton.files[0];
-    if(!file) return;
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (event) => {
-        const jsObject = JSON.parse(event.target.result);
-        chrome.storage.sync.set(jsObject, ()=>{
-            console.log("set");
-            location.reload();
-        })
+        try {
+            const importedSchedule = JSON.parse(event.target.result);
+            if (!Array.isArray(importedSchedule.links)) {
+                throw new Error("Missing links array");
+            }
+
+            chrome.storage.sync.set(importedSchedule, () => {
+                location.reload();
+            });
+        } catch (error) {
+            setStatus("Import failed", "error");
+        }
     };
 
     reader.readAsText(file);
-})
+});
 
-//exporting json
-const exportButton = document.querySelector('#export');
-exportButton.addEventListener('click', () => {
-    chrome.storage.sync.get(['links'], result => {
-        const jsonString = JSON.stringify({links : result.links}); 
+exportButton.addEventListener("click", () => {
+    chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
+        const jsonString = JSON.stringify({
+            links: result.links ?? [],
+            gracePeriod_m: result.gracePeriod_m ?? 10,
+        }, null, 2);
         const blob = new Blob([jsonString], { type: "application/json" });
 
-        //start download
         const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "data.json"; // Desired filename
-        document.body.appendChild(a); // Required for Firefox
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url); // Clean up
-    })
-})
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "meeting-links-schedule.json";
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+        URL.revokeObjectURL(url);
+    });
+});
 
+scheduleForm.addEventListener("input", (event) => {
+    setDirty();
 
-//submitting
-schedule_form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Stop the default form submission
+    if (event.target.name === "name") {
+        const unit = event.target.closest(".schedule_unit");
+        const title = unit.querySelector("h3");
+        title.innerText = event.target.value.trim() || "Meeting";
+    }
+});
 
-    const formData = new FormData(schedule_form);
-    newFormData = formDataToObjectWithArrays(formData);;
-    const newSched = [];
-    
-    //Format day array with delimeter "," (the hidden type input in the html)
-    newFormData['day'] = formatDaysToJsonFriendly(newFormData['day'])
+scheduleForm.addEventListener("change", () => {
+    entriesSection.querySelectorAll(".schedule_unit.has-error").forEach((unit) => {
+        unit.classList.remove("has-error");
+    });
+    setDirty();
+});
 
-    //input into newSched Array
-    newFormData['name'].forEach((name, index) => {
-        newSched.push({
-          name: name,
-          days: newFormData["day"][index],
-          time: `${newFormData["timeStart"][index]}-${newFormData["timeEnd"][index]}`,
-          link: newFormData["link"][index],
+scheduleForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const schedule = collectSchedule();
+    if (!schedule) return;
+
+    chrome.storage.sync.set({ links: schedule }, () => {
+        setStatus("Saved");
+    });
+});
+
+function generateScheduleClone(subject = {}) {
+    const clone = scheduleTemplate.content.cloneNode(true);
+    const mainDiv = clone.querySelector(".schedule_unit");
+    mainDiv.id = `s_${entryId}`;
+
+    const nameInput = mainDiv.querySelector('[name="name"]');
+    const linkInput = mainDiv.querySelector('[name="link"]');
+    const startInput = mainDiv.querySelector('[name="timeStart"]');
+    const endInput = mainDiv.querySelector('[name="timeEnd"]');
+    const title = mainDiv.querySelector("h3");
+
+    nameInput.value = subject.name ?? "";
+    linkInput.value = subject.link ?? "";
+
+    const [startTime = "", endTime = ""] = (subject.time ?? "").split("-");
+    startInput.value = startTime;
+    endInput.value = endTime;
+    title.innerText = subject.name || "Meeting";
+
+    const activeDays = formatDaysToBooleanArray(subject.days ?? "");
+    const dayInputs = mainDiv.querySelectorAll('input[name="day"]:not(.day-delimiter)');
+    activeDays.forEach((isOn, index) => {
+        dayInputs[index].checked = isOn;
+    });
+
+    const removeButton = mainDiv.querySelector(".schedule_unit_x");
+    removeButton.addEventListener("click", () => {
+        mainDiv.remove();
+        if (entriesSection.children.length === 0) {
+            entriesSection.appendChild(generateScheduleClone());
+        }
+        setDirty();
+    });
+
+    entryId++;
+    return clone;
+}
+
+function collectSchedule() {
+    const units = [...entriesSection.querySelectorAll(".schedule_unit")];
+    const schedule = [];
+
+    for (const unit of units) {
+        const nameInput = unit.querySelector('[name="name"]');
+        const linkInput = unit.querySelector('[name="link"]');
+        const startInput = unit.querySelector('[name="timeStart"]');
+        const endInput = unit.querySelector('[name="timeEnd"]');
+        const checkedDays = [...unit.querySelectorAll('input[name="day"]:checked')]
+            .filter((input) => input.value !== ",")
+            .map((input) => input.value);
+
+        clearCustomValidity(unit);
+
+        if (!nameInput.checkValidity() || !linkInput.checkValidity() || !startInput.checkValidity() || !endInput.checkValidity()) {
+            setStatus("Complete required fields", "error");
+            scheduleForm.reportValidity();
+            return false;
+        }
+
+        if (checkedDays.length === 0) {
+            setUnitError(unit, "Choose at least one day.");
+            return false;
+        }
+
+        if (startInput.value >= endInput.value) {
+            endInput.setCustomValidity("End time must be later than start time.");
+            setStatus("Check meeting times", "error");
+            scheduleForm.reportValidity();
+            return false;
+        }
+
+        schedule.push({
+            name: nameInput.value.trim(),
+            days: checkedDays.join(""),
+            time: `${startInput.value}-${endInput.value}`,
+            link: linkInput.value.trim(),
         });
-    })
+    }
 
-    console.log(newSched);
-    
-    
-    const schedJSON = { links: newSched };
-    //const jsonString = JSON.stringify(schedJSON);
-    chrome.storage.sync.set(schedJSON, () => {
-        console.log("saved");
-    })
-
-    chrome.storage.sync.get(["links"], result => {
-        console.log(result.links);
-    })
-})
-
-
-
-
-
-// - functions -
-async function getScheduleJson(file){
-    const response = await fetch(chrome.runtime.getURL(file));
-    const schedule = await response.json();
     return schedule;
 }
 
 function formatDaysToBooleanArray(dayString) {
     const days = ["M", "T", "W", "Th", "F", "Sa", "Su"];
     const boolArray = [false, false, false, false, false, false, false];
-    const daysArray = dayString.split(/(?=[A-Z])/);
-    daysArray.forEach(day => {
-        index = days.indexOf(day);
-        boolArray[index] = true;
-    })
+    const daysArray = dayString.split(/(?=[A-Z])/).filter(Boolean);
+
+    daysArray.forEach((day) => {
+        const index = days.indexOf(day);
+        if (index >= 0) {
+            boolArray[index] = true;
+        }
+    });
+
     return boolArray;
 }
 
-function generateScheduleClone(){
-    const clone = schedule_template.content.cloneNode(true);
-    const mainDiv = clone.querySelector(".schedule_unit");
-    mainDiv.id = `s_${entry_id}`;
-
-    // //id the days
-    // const daysArray = clone.querySelectorAll('.day');
-    // daysArray.forEach(day => {
-    //     day.name = `day_${entry_id}`;
-    // })
-
-    // add the remove button's functionality
-    const removeButton = clone.querySelector(".schedule_unit_x");
-    removeButton.addEventListener("click", () => {
-    console.log("remove clicked");
-    removeButton.parentNode.remove();
-    });
-
-    entry_id++;
-    return clone;
+function setUnitError(unit, message) {
+    unit.classList.add("has-error");
+    setStatus(message, "error");
 }
 
-function formDataToObjectWithArrays(formData) {
-  const obj = {};
-  for (const [key, value] of formData.entries()) {
-    if (obj[key]) {
-      obj[key].push(value);
-    } else {
-      obj[key] = [value];
+function clearCustomValidity(unit) {
+    unit.classList.remove("has-error");
+    unit.querySelectorAll("input").forEach((input) => {
+        input.setCustomValidity("");
+    });
+}
+
+function setDirty() {
+    setStatus("Unsaved changes", "dirty");
+}
+
+function setStatus(message, state = "default") {
+    clearTimeout(saveTimer);
+    saveStatus.innerText = message;
+    saveStatus.classList.toggle("is-dirty", state === "dirty");
+    saveStatus.classList.toggle("is-error", state === "error");
+
+    if (message === "Saved") {
+        saveTimer = setTimeout(() => setStatus("Ready"), 1800);
     }
-  }
-  return obj;
-}
-
-function formatDaysToJsonFriendly(daysArray){
-    const newDays = [""];
-    let index = 0;
-    daysArray.forEach((day) => {
-      if (day != ",") newDays[index] += day;
-      else {
-        index++;
-        newDays[index] = "";
-      }
-    });
-    newDays.pop();
-    return newDays;
 }

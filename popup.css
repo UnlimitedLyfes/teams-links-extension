@@ -1,39 +1,125 @@
-*{
-    box-sizing:border-box;
+:root {
+    color-scheme: light;
+    --bg: #f7f8fc;
+    --surface: #ffffff;
+    --surface-strong: #f1f3f9;
+    --text: #1f2430;
+    --muted: #697386;
+    --border: #dde2ee;
+    --accent: #6264a7;
+    --accent-hover: #51538f;
+    --disabled: #a3adbf;
 }
 
-html, body {
-    padding:3px;
+* {
+    box-sizing: border-box;
 }
 
-.linkbutton{
-    background-color: rgb(138, 138, 255);
-    padding:5px 20px;
-    border-radius:10px;
-    white-space: nowrap;
+html,
+body {
+    margin: 0;
+    min-width: 310px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.main{
-    display:inline-block;
-}
-.main p{
-    line-height:10px;
-    margin-top:5px;
+.popup-shell {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
 }
 
-.refresh{
-    display:inline-block;
-    vertical-align: top;
-}
-
-.refresh img{
-    height:15px;
-}
-.top{
-    display:flex;
+.popup-header {
+    display: flex;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: 16px;
 }
 
-#optionsButton:hover{
-    cursor:pointer;
+.eyebrow {
+    margin: 0 0 3px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.2;
+}
+
+.icon-button {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    cursor: pointer;
+}
+
+.icon-button:hover {
+    background: var(--surface-strong);
+}
+
+.icon-button img {
+    width: 16px;
+    height: 16px;
+}
+
+.meeting-card {
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.status-label {
+    margin: 0 0 6px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.current {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.meeting-time {
+    min-height: 17px;
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.linkbutton {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.linkbutton:hover {
+    background: var(--accent-hover);
+}
+
+.linkbutton.is-disabled {
+    background: var(--surface-strong);
+    color: var(--disabled);
+    pointer-events: none;
 }

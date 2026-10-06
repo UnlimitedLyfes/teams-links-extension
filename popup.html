@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href = "popup.css">
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div class = "main">
-        <div class='top'>
-            <div class='description'>
-                Current:
-                <p class = "current">none</p>
+    <main class="popup-shell">
+        <header class="popup-header">
+            <div>
+                <p class="eyebrow">Meeting Links</p>
+                <h1>Current meeting</h1>
             </div>
-            <div class = "refresh">
-                <img src = "icons/gear.png" id="optionsButton">
-            </div> 
-        </div>
-        <a class = "linkbutton" target="_blank" rel="noopener noreferrer">Go to Meeting</a>
-    </div>
-    
-    
-    <script src = "popup.js"></script>
+            <button class="icon-button" id="optionsButton" type="button" aria-label="Open options" title="Open options">
+                <img src="icons/gear.png" alt="">
+            </button>
+        </header>
+
+        <section class="meeting-card" aria-live="polite">
+            <p class="status-label">Now</p>
+            <p class="current">Checking schedule...</p>
+            <p class="meeting-time"></p>
+        </section>
+
+        <a class="linkbutton is-disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">Go to meeting</a>
+    </main>
+
+    <script src="popup.js"></script>
 </body>
 </html>
