@@ -96,6 +96,12 @@ scheduleForm.addEventListener("input", (event) => {
     }
 });
 
+scheduleForm.addEventListener("focusin", (event) => {
+    if (event.target.type === "time" && event.target.value === "") {
+        event.target.value = "00:00";
+    }
+});
+
 scheduleForm.addEventListener("change", () => {
     entriesSection.querySelectorAll(".schedule_unit.has-error").forEach((unit) => {
         unit.classList.remove("has-error");
