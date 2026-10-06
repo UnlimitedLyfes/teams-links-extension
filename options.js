@@ -6,6 +6,7 @@ const gracePeriodInput = document.getElementById("gracePeriodInput");
 const importButton = document.getElementById("import");
 const exportButton = document.getElementById("export");
 const saveStatus = document.getElementById("saveStatus");
+const emptyScheduleMessage = document.getElementById("emptyScheduleMessage");
 
 let entryId = 0;
 let saveTimer;
@@ -14,11 +15,12 @@ chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
     const links = result.links ?? [];
 
     if (links.length === 0) {
-        entriesSection.appendChild(generateScheduleClone());
+        updateEmptyState();
     } else {
         links.forEach((subject) => {
             entriesSection.appendChild(generateScheduleClone(subject));
         });
+        updateEmptyState();
     }
 
     gracePeriodInput.value = result.gracePeriod_m ?? 10;
@@ -27,6 +29,7 @@ chrome.storage.sync.get(["links", "gracePeriod_m"], (result) => {
 
 addButton.addEventListener("click", () => {
     entriesSection.appendChild(generateScheduleClone());
+    updateEmptyState();
     setDirty();
 });
 
@@ -139,9 +142,7 @@ function generateScheduleClone(subject = {}) {
     const removeButton = mainDiv.querySelector(".schedule_unit_x");
     removeButton.addEventListener("click", () => {
         mainDiv.remove();
-        if (entriesSection.children.length === 0) {
-            entriesSection.appendChild(generateScheduleClone());
-        }
+        updateEmptyState();
         setDirty();
     });
 
@@ -191,6 +192,10 @@ function collectSchedule() {
     }
 
     return schedule;
+}
+
+function updateEmptyState() {
+    emptyScheduleMessage.hidden = entriesSection.children.length > 0;
 }
 
 function formatDaysToBooleanArray(dayString) {

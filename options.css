@@ -236,6 +236,15 @@ button:focus-visible,
     gap: 14px;
 }
 
+.empty-state {
+    padding: 18px;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    background: var(--surface-strong);
+    color: var(--muted);
+    text-align: center;
+}
+
 .schedule_unit {
     display: grid;
     gap: 16px;
